@@ -1,17 +1,27 @@
 import { mframe } from '../src';
 
 
-mframe(document.getElementById('root'), {
-  id: '1',
-  html: `<div>
-    <script src="http://127.0.0.1:8080/1.js"></script>
+mframe(document.getElementById('microfront_app1'), {
+  id: 'app1',
+  html: `
     <div>
-      <script>
-        alert(a);
-      </script>
+      <link rel="stylesheet" href="cdn/index.css" />
+      <p class="a">This is a app1</a>
     </div>
-    <script src="http://127.0.0.1:8080/2.js"></script>
-  </div>`
+    <script src="cdn/common.js"></script>
+    <script>alert(a)</script>
+    <script src="cdn/index.js"></script>
+  `
 });
 
-console.log(mframe)
+mframe(document.getElementById('microfront_app2'), {
+  id: 'app2',
+  html: `
+    <div>
+      This is a app2
+    </div>
+    <script>
+      alert('app2');
+    </script>
+  `
+});
