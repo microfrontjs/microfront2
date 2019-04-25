@@ -1,40 +1,19 @@
 import { runScripts } from './utils/script';
 
 interface Config {
-  id: string;
+  id?: string;
   html: string;
 }
 
-// interface HTML extends HTMLElement {
-//   __microfrontmframe: MicrofrontFrame;
-// }
-
-
-// interface MicrofrontFrame {
-//   id?: string;
-//   html: string;
-// }
-
-
-function dispose(dom: HTMLElement) {
-  const id = dom.getAttribute('microfrontmframe');
-  // postMessage(id, 'willDispose').then(() => {
-    
-  // });
-}
 
 function mframe(dom: HTMLElement, config: Config) {
   const { id, html } = config;
-  if (dom.getAttribute('microfrontmframe')) {
-    return () => dispose(dom);
-  }
-
   const scriptList = [];
+  const domList = [];
 
   const div = document.createElement('div');
   div.innerHTML = html;
 
-  // script
   const scriptNodes = div.querySelectorAll('script');
   for (let i = 0; i < scriptNodes.length; i++) {
     const node = scriptNodes[i]
@@ -55,11 +34,18 @@ function mframe(dom: HTMLElement, config: Config) {
   }
 
   while(div.childNodes.length) {
-    dom.appendChild(div.firstChild);
+    const node = div.firstChild;
+    dom.appendChild(node);
+    domList.push(node);
   }
   
   runScripts(scriptList, () => {});
 
+  return {
+    dispose() {
+      domList.forEach(node => node.parentNode.removeChild(node));
+    }
+  }
 }
 
 export default mframe;

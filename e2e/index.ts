@@ -1,27 +1,41 @@
 import { mframe } from '../src';
 
 
-mframe(document.getElementById('microfront_app1'), {
-  id: 'app1',
-  html: `
-    <div>
-      <link rel="stylesheet" href="cdn/index.css" />
-      <p class="a">This is a app1</a>
-    </div>
-    <script src="cdn/common.js"></script>
-    <script>alert(a)</script>
-    <script src="cdn/index.js"></script>
-  `
+let app;
+
+
+document.querySelector('#app1').addEventListener('click', () => {
+  if (app) {
+    app.dispose();
+  }
+  app = mframe(document.getElementById('microfront_app'), {
+    html: `
+      <div>
+        <link rel="stylesheet" href="cdn/index.css" />
+        <p class="a">This is a app1</a>
+      </div>
+      <script src="cdn/app1/common.js"></script>
+      <script>console.log('app1 script')</script>
+      <script src="cdn/app1/index.js"></script>
+    `
+  });
 });
 
-mframe(document.getElementById('microfront_app2'), {
-  id: 'app2',
-  html: `
-    <div>
-      This is a app2
-    </div>
-    <script>
-      alert('app2');
-    </script>
-  `
+document.querySelector('#app2').addEventListener('click', () => {
+  if (app) {
+    app.dispose();
+  }
+  app = mframe(document.getElementById('microfront_app'), {
+    html: `
+      <div>
+        <link rel="stylesheet" href="cdn/index.css" />
+        <p class="a">This is a app2</a>
+      </div>
+      <script src="cdn/app2/common.js"></script>
+      <script>console.log('app2 script')</script>
+      <script src="cdn/app2/index.js"></script>
+    `
+  });
 });
+
+
