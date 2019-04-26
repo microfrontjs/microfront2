@@ -1,19 +1,18 @@
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
-import json from 'rollup-plugin-json';
 import pkg from './package.json';
 
 process.env.NODE_ENV
 
 const e2eConfig = {
-	input: 'e2e/index.ts',
+	input: 'src/index.ts',
 	output: [{
-		file: './e2e/index.js',
-		format: 'iife'
+		file: './e2e/microfront.umd.js',
+		format: 'umd',
+		name: 'microfront'
 	}],
 	plugins: [
-		json(),
 		typescript(),
 		resolve(),
 		commonjs()
@@ -40,4 +39,4 @@ const buildConfig = {
 	],
 };
 
-export default process.env.NODE_ENV === 'e2e' ? e2eConfig : buildConfig;
+export default buildConfig;

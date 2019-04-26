@@ -1,5 +1,3 @@
-
-
 function loadScript(src, cb) {
   var script = document.createElement('script');
   script.type = "text/javascript";
@@ -15,7 +13,7 @@ function loadScript(src, cb) {
 function runScripts(list, cb) {
   function runScript(index) {
     if (list.length === index) {
-      cb && cb();
+      cb();
       return;
     }
     const obj = list[index];

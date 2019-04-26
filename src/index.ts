@@ -1,4 +1,4 @@
 import mframe from './mframe';
+import { emit, on, test } from "./event";
 
-export { mframe };
-
+export { mframe, emit, on, test };
