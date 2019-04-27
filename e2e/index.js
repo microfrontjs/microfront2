@@ -3,15 +3,26 @@ var dom = document.getElementById('microfront_app');
 var button1 = document.querySelector('#app1');
 var button2 = document.querySelector('#app2');
 
-var url1 = 'cdn/app1/index.html';
-var url2 = 'cdn/app2/index.html';
+window.appName = 'app';
 
-button1.addEventListener('click', () => {
-  window.microfront.mframe(dom, { url: url1 })
-});
 
-button2.addEventListener('click', () => {
-  window.microfront.mframe(dom, { url: url2 });
-});
+var { create, on } = window.microfront;
 
+function render(url) {
+  fetch(url, {
+    credentials: 'include',
+  })
+  .then(response => response.text())
+  .then(html => {
+    create({
+      dom,
+      id: appName,
+      html,
+    });
+  });
+}
+
+
+button1.addEventListener('click', () => render('cdn/app1/index.html'));
+button2.addEventListener('click', () => render('cdn/app2/index.html'));
 

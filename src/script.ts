@@ -10,6 +10,7 @@ function loadScript(src, cb) {
   head.appendChild(script);
 }
 
+
 function runScripts(list, cb) {
   function runScript(index) {
     if (list.length === index) {
@@ -20,7 +21,7 @@ function runScripts(list, cb) {
     if (obj.src) {
       loadScript(obj.src, () => {
         runScript(index + 1);
-      })
+      });
     } else {
       (new Function(obj.script))();
       runScript(index + 1);
@@ -29,4 +30,4 @@ function runScripts(list, cb) {
   runScript(0);
 }
 
-export { runScripts };
+export default runScripts;

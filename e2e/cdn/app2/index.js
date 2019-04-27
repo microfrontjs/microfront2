@@ -1,10 +1,9 @@
 console.log('app2 index.js');
 
-var num = window.id;
+var frame = microfront.get(window.appName);
 
-
-
-
-setTimeout(() => {
-  window.microfront.test();
-}, 1000)
+frame.on('unload', () => {
+  alert('unload app2');
+}).on('load', () => {
+  alert('load app2');
+});
