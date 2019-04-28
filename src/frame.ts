@@ -1,27 +1,19 @@
 import runScripts from './script';
 import { emit, on, removeId } from './event';
-
-interface Config {
-  dom: HTMLElement,
-  id?: string;
-  html: string;
-}
+import effect from './effect';
 
 
 const map = {};
 let currentId = 0;
 
-function create(config: Config) {
-  const { dom, html } = config;
+function create(html: string, dom: HTMLElement) {
   const frameId = dom['frame_id'];
-  
+
   if (map[frameId]) {
-    map[frameId].dispose();
-    delete map[frameId];
+    map[frameId].unmount();
   }
 
-  let { id } = config;
-  id = id || `frame_${++currentId}`;
+  const id = `frame_${++currentId}`;
   dom['frame_id'] = id;
 
   const scriptList: {src?:string, script?:string}[] = [];
@@ -53,47 +45,36 @@ function create(config: Config) {
   }
 
   if (scriptList.length > 0) {
-    runScripts(scriptList, () => {     
-      emit({
-        name: 'load',
-        id,
-      });
+    runScripts(scriptList, () => {
+      emit({ name: 'mount', id });
     });
   }
 
+  const { effectPromiseFunction, effectCallbackFunction } = effect(() => {
+    if (!map[id]) {
+      throw new Error(`effect warning: The frame with id "${id}" has been been unmounted and you can ignore this error.`);
+    }
+  });
 
-  const obj = {
-    id,
-    dispose() {
-      emit({
-        name: 'unload',
-        id
-      });
+  const frame = {
+    unmount() {
+      emit({ name: 'unmount', id });
       domList.forEach(node => node.parentNode.removeChild(node));
       removeId(id);
+      delete map[id];
     },
     on(name: string, cb: any) {
-      on({
-        name,
-        id,
-        cb,
-      });
+      on({ name, id, cb });
       return this;
     },
     emit(name: string, value: any) {
-      emit({
-        name,
-        id,
-        value,
-      });
-    }
+      emit({ name, id, value });
+    },
+    effectPromiseFunction,
+    effectCallbackFunction,
   };
-  map[id] = obj;
-  return obj;
+  map[id] = frame;
+  return frame;
 }
 
-function get(id: string) {
-  return map[id];
-}
-
-export { create, get };
+export { create };
