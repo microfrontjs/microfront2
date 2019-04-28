@@ -2,7 +2,6 @@ import runScripts from './script';
 import { emit, on, removeId } from './event';
 import effect from './effect';
 
-
 const map = {};
 let currentId = 0;
 
@@ -18,7 +17,6 @@ function create(html: string, dom: HTMLElement) {
 
   const scriptList: {src?:string, script?:string}[] = [];
   const domList: ChildNode[] = [];
-
   const div = document.createElement('div');
   div.innerHTML = html;
   const scriptNodes = div.querySelectorAll('script');
@@ -26,7 +24,6 @@ function create(html: string, dom: HTMLElement) {
   for (let i = 0; i < scriptNodes.length; i++) {
     const node = scriptNodes[i]
     const type = node.getAttribute('type');
-
     if (!type || type === 'text/javascript') {
       const src = node.getAttribute('src');
       scriptList.push(src ? {
