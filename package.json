@@ -10,6 +10,12 @@
   "files": [
     "dist"
   ],
+  "keywords": [
+    "microfront",
+    "micro-frontends",
+    "micro-services",
+    "microframework"
+  ],
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^24.0.11",

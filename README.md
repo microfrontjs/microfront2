@@ -56,7 +56,9 @@ create(
 - on(name: string, cb: any)
 
   Built in two events: "mount" and "unmount"
+  
   mount: when all html scripts are loaded
+  
   unmount: when calling the app's unmount method
 
 ```js
